@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 
 function App() {
-  const { students, addStudent, updateStudent, deleteStudent } = useStudents();
+  const { students, isLoading, addStudent, updateStudent, deleteStudent } = useStudents();
   
   const [searchTerm, setSearchTerm] = useState('');
   
@@ -104,9 +104,15 @@ function App() {
         </div>
 
         {/* Student List Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredStudents.length > 0 ? (
-            filteredStudents.map((student) => (
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-20">
+            <div className="w-12 h-12 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin"></div>
+            <p className="mt-4 text-slate-500 font-medium">กำลังโหลดข้อมูล...</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredStudents.length > 0 ? (
+              filteredStudents.map((student) => (
               <div key={student.id} className="glass-card rounded-2xl p-6 relative group overflow-hidden">
                 <div className="absolute top-0 left-0 w-1 h-full bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 
@@ -162,8 +168,9 @@ function App() {
               <p className="text-lg font-medium">ไม่พบข้อมูลนักเรียน</p>
               <p className="text-sm">ลองค้นหาด้วยคำอื่น หรือเพิ่มนักเรียนใหม่</p>
             </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </div>
 
       <StudentModal
